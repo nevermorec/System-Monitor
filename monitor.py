@@ -66,22 +66,12 @@ def OnTimer(ax):
 	packet_recv = packet_recv[1:] + [tmp_net[1]]
 	cpu = cpu[1:] + [p.cpu_percent()]
 	memory = memory[1:] + [p.virtual_memory().percent]
-	"""
-	l_user.set_ydata(user)
-	l_sys.set_ydata(sys)
-	l_idle.set_ydata(idle)
-	"""
 	l_cpu.set_ydata(cpu)
 	l_memory.set_ydata(memory)
 	l_packet_send.set_ydata(packet_send)
 	l_packet_recv.set_ydata(packet_recv)
 	while True:
 		try:
-			"""
-			axes[0].draw_artist(l_user)
-			axes[0].draw_artist(l_sys)
-			axes[0].draw_artist(l_idle)
-			"""
 			axes[0].draw_artist(l_cpu)
 			axes[0].draw_artist(l_memory)
 			axes[1].draw_artist(l_packet_send)
