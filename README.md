@@ -2,6 +2,6 @@
 
 It can show cpu, memory and network packets dynamically.
 
-#Requirement：
+Requirement：
   matplotlib
   psutil
