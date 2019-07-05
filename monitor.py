@@ -1,10 +1,11 @@
 ﻿import matplotlib.pyplot as plt
 import matplotlib.font_manager as font_manager
 import psutil as p
+import numpy as np
 
 
 POINTS = 300
-fig, ax = plt.subplots(2,1)
+fig, ax = plt.subplots(3,1)
 axes=ax.flatten()
 
 axes[0].set_ylim([0, 100])
@@ -26,6 +27,20 @@ axes[1].set_xlabel("T")
 axes[1].set_title("Network Packets")
 axes[1].set_yticks(range(0, 201, 40))
 axes[1].grid(True)
+
+disk_id = []
+disk_usage = []
+for id in p.disk_partitions():
+    disk_name = id.device.split(':')
+    s = disk_name[0]
+    disk_id.append(s)
+    disk_usage.append(p.disk_usage(id.device).percent)
+
+axes[2].bar(disk_id, disk_usage, width= 0.35)
+axes[2].set_title("Disc Usage")
+axes[2].set_ylim([0, 100])
+#axes[2].set_yticks(range(0, 101, 20))
+axes[2].set_ylabel("Percent")
 
 cpu = [None] * POINTS
 memory = [None] * POINTS
@@ -66,12 +81,22 @@ def OnTimer(ax):
 	packet_recv = packet_recv[1:] + [tmp_net[1]]
 	cpu = cpu[1:] + [p.cpu_percent()]
 	memory = memory[1:] + [p.virtual_memory().percent]
+	"""
+	l_user.set_ydata(user)
+	l_sys.set_ydata(sys)
+	l_idle.set_ydata(idle)
+	"""
 	l_cpu.set_ydata(cpu)
 	l_memory.set_ydata(memory)
 	l_packet_send.set_ydata(packet_send)
 	l_packet_recv.set_ydata(packet_recv)
 	while True:
 		try:
+			"""
+			axes[0].draw_artist(l_user)
+			axes[0].draw_artist(l_sys)
+			axes[0].draw_artist(l_idle)
+			"""
 			axes[0].draw_artist(l_cpu)
 			axes[0].draw_artist(l_memory)
 			axes[1].draw_artist(l_packet_send)
@@ -80,6 +105,7 @@ def OnTimer(ax):
 		except:
 			pass
 	axes[0].figure.canvas.draw()
+	
 
 
 def start_monitor():
